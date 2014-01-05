@@ -12,6 +12,28 @@ module.exports = function(window, localRoot) {
   var lt = window.lt;
 
   /*************************************************************************\
+   * Misc. Helpers
+  \*************************************************************************/
+  /*\
+  |*| Attempt the given operation, ignoring errors with the given code.
+  \*/
+  function ignore(callback, codes) {
+    if(!_.isArray(codes)) {
+      codes = [codes];
+    }
+
+    try {
+      return callback();
+    } catch (err) {
+      if(err.code in codes) {
+        return;
+      }
+      throw err;
+    }
+  }
+
+
+  /*************************************************************************\
    * CLJS Helpers
   \*************************************************************************/
   /*\
@@ -30,28 +52,10 @@ module.exports = function(window, localRoot) {
   \*/
   function requireLocal(name, root) {
     root = root || localRoot;
-    var module;
 
-    // File include
-    try {
-      module = require(path.join(root, name));
-    } catch (e) {
-      if(e.code !== 'MODULE_NOT_FOUND') {
-        throw e;
-      }
-    }
-
-    // Module include
-    if(!module) {
-      module = require(path.join(root, 'node_modules', name));
-    }
-
-    // Global include
-    if(!module) {
-      module = require(name);
-    }
-
-    return module;
+    return ignore(_.partial(require, path.join(root, name)), 'MODULE_NOT_FOUND') || // File include.
+      ignore(_.partial(require, path.join(root, 'node_modules', name)), 'MODULE_NOT_FOUND') || // Module include
+      require(name); // Global include
   }
 
   /*\
@@ -175,6 +179,8 @@ module.exports = function(window, localRoot) {
   }
 
   return {
+    ignore: ignore,
+
     // cljs
     toKeyword: toKeyword,
 
