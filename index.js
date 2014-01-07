@@ -25,7 +25,7 @@ module.exports = function(window, localRoot) {
     try {
       return callback();
     } catch (err) {
-      if(err.code in codes) {
+      if(_.contains(codes, err.code)) {
         return;
       }
       throw err;
