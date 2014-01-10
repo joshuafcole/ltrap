@@ -60,8 +60,6 @@ module.exports = function(window, localRoot) {
 
   /*\
   |*| Registers functions as CodeMirror actions.
-  |*| Currently used as a hack becasue CodeMirror actions are the only
-  |*| Functions I know how to create and trigger in keymaps.
   \*/
   function addAction(commandName, command) {
     var CodeMirror = window.CodeMirror;
@@ -104,7 +102,6 @@ module.exports = function(window, localRoot) {
   \*************************************************************************/
 
   /*\
-  |*| @TODO: Implement me.
   |*| Gets a list of all open tabs, represented in a 2D array of [group][file]
   \*/
   function getTabs() {
@@ -118,7 +115,7 @@ module.exports = function(window, localRoot) {
 
   /*\
   |*| Gets the currently active tab as an html element.
-  |*| @NOTE: Does not work with multiple tabsets.
+  |*| @FIXME: Does not work with multiple tabsets.
   \*/
   function getActiveTab() {
     return $('#multi .tabset > .list li.active');
@@ -126,7 +123,7 @@ module.exports = function(window, localRoot) {
 
   /*\
   |*| Gets the filepath of the currently active tab, super hacky.
-  |*| @NOTE: Does not work with multiple tabsets.
+  |*| @FIXME: Does not work with multiple tabsets.
   \*/
   function getActiveFile() {
     return getActiveTab().attr('title');
@@ -135,7 +132,7 @@ module.exports = function(window, localRoot) {
   /*\
   |*| Gets the directory containing the current buffer if one exists, or home.
   |*| cwd in LT points to LT's directory
-  |*| @NOTE: Does not work with multiple tabsets
+  |*| @FIXME: Does not work with multiple tabsets
   \*/
   function getActiveDirectory() {
     var dir = path.dirname(getActiveFile());
@@ -158,6 +155,7 @@ module.exports = function(window, localRoot) {
   /*\
   |*| Toggles an element's visiblity. Returns truthy if
   |*| opened and falsy if closed.
+  |*| @NOTE: This is hacky and behavior is subject to future improvement.
   \*/
   function showContainer(container) {
     var $container = $(container);
@@ -185,7 +183,8 @@ module.exports = function(window, localRoot) {
     toKeyword: toKeyword,
 
     // lt
-    requireLocal: requireLocal,
+    require: requireLocal,
+    requireLocal: requireLocal, // @deprecated
     addAction: addAction,
     command: command,
     enterContext: enterContext,
