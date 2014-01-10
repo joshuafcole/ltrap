@@ -1,5 +1,4 @@
 var _ = require('underscore');
-var $ = require('jquery');
 var path = require('path');
 
 
@@ -9,6 +8,7 @@ path.join(ltdir, 'plugins', 'recall');
 
 module.exports = function(window, localRoot) {
   var cljs = window.cljs;
+  var document = window.document;
   var lt = window.lt;
 
   /*************************************************************************\
@@ -105,10 +105,10 @@ module.exports = function(window, localRoot) {
   |*| Gets a list of all open tabs, represented in a 2D array of [group][file]
   \*/
   function getTabs() {
-    var tabsets = $('#multi .tabset');
+    var tabsets = document.querySelectorAll('#multi .tabset');
     return _.map(tabsets, function(tabset) {
-      return _.map($(tabset).find('.list li'), function(tab) {
-        return $(tab).attr('title');
+      return _.map(tabset.querySelectorAll('.list li'), function(tab) {
+        return tab.getAttribute('title');
       });
     });
   }
@@ -118,7 +118,7 @@ module.exports = function(window, localRoot) {
   |*| @FIXME: Does not work with multiple tabsets.
   \*/
   function getActiveTab() {
-    return $('#multi .tabset > .list li.active');
+    return document.querySelector('#multi .tabset > .list li.active');
   }
 
   /*\
@@ -126,7 +126,7 @@ module.exports = function(window, localRoot) {
   |*| @FIXME: Does not work with multiple tabsets.
   \*/
   function getActiveFile() {
-    return getActiveTab().attr('title');
+    return getActiveTab().getAttribute('title');
   }
 
   /*\
@@ -158,22 +158,19 @@ module.exports = function(window, localRoot) {
   |*| @NOTE: This is hacky and behavior is subject to future improvement.
   \*/
   function showContainer(container) {
-    var $container = $(container);
-    var height = $container.height();
+    var elem = document.querySelector(container);
+    if(!elem) {
+      return false;
+    }
+
+    var height = parseInt(elem.style.height, 10);
     if(height === 0) {
-      $container.height('auto');
+      elem.style.height = 'auto';
     } else {
-      $container.height(0);
+      elem.style.height = 0;
     }
 
     return !height;
-  }
-
-  /*\
-  |*| Adds an element to a container's .content div.
-  \*/
-  function addItem(container, item) {
-    $(container).children('.content').first().append(item);
   }
 
   return {
@@ -199,7 +196,6 @@ module.exports = function(window, localRoot) {
     // UI
     prompt: prompt,
     confirm: confirm,
-    showContainer: showContainer,
-    addItem: addItem
+    showContainer: showContainer
   };
 };
