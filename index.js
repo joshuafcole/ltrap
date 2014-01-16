@@ -88,7 +88,7 @@ module.exports = function(window, localRoot) {
   |*|   exec:    function Function to execute.
   |*| }
   \*/
-  function addCommand(name, command) {
+  function addCommand(command) {
     var cmd = mori.js_to_clj(command);
     lt.objs.command.command.call(null, cmd);
   }
@@ -192,7 +192,6 @@ module.exports = function(window, localRoot) {
 
     // lt
     require: requireLocal,
-    requireLocal: requireLocal, // @deprecated
 
     addAction: addAction,
     addCommand: addCommand,
