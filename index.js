@@ -115,15 +115,13 @@ module.exports = function(window, localRoot) {
 
   /*\
   |*| Gets the currently active tab as an html element.
-  |*| @FIXME: Does not work with multiple tabsets.
   \*/
   function getActiveTab() {
-    return document.querySelector('#multi .tabset > .list li.active');
+    return document.querySelector('#multi .tabset.active > .list li.active');
   }
 
   /*\
   |*| Gets the filepath of the currently active tab, super hacky.
-  |*| @FIXME: Does not work with multiple tabsets.
   \*/
   function getActiveFile() {
     return getActiveTab().getAttribute('title');
@@ -132,7 +130,6 @@ module.exports = function(window, localRoot) {
   /*\
   |*| Gets the directory containing the current buffer if one exists, or home.
   |*| cwd in LT points to LT's directory
-  |*| @FIXME: Does not work with multiple tabsets
   \*/
   function getActiveDirectory() {
     var dir = path.dirname(getActiveFile());
