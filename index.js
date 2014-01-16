@@ -1,11 +1,6 @@
 var _ = require('underscore');
 var path = require('path');
 
-
-
-var ltdir = window.lt.util.load.pwd;
-path.join(ltdir, 'plugins', 'recall');
-
 module.exports = function(window, localRoot) {
   var cljs = window.cljs;
   var document = window.document;
@@ -41,6 +36,22 @@ module.exports = function(window, localRoot) {
   \*/
   function toKeyword(name) {
     return new cljs.core.Keyword(null, name, name);
+  }
+
+  /*\
+  |*| Casts an object into a cljs PersistentHashMap.
+  |*| noConvert: [Boolean] Do not convert string keys into Keywords.
+  \*/
+  function toHashMap(obj, noConvert) {
+    var hash = cljs.core.PersistentHashMap.EMPTY;
+    _.each(obj, function(value, key) {
+      if(!noConvert) {
+        key = toKeyword(key);
+      }
+      hash = cljs.core.assoc(hash, key, value);
+    });
+
+    return hash;
   }
 
 
@@ -82,14 +93,21 @@ module.exports = function(window, localRoot) {
   /*\
   |*| Registers a new command with LT.
   |*| command {
-  |*|   command: String   Name
-  |*|   desc:    String   Description
-  |*|   hidden:  Boolean  Visible in commandbar
-  |*|   exec:    function Function to execute.
+  |*|   command: String    Name (cast to Keyword)
+  |*|   desc:    String    Description
+  |*|   exec:    function  Function to execute.
+  |*|   hidden:  [Boolean] Visible in commandbar
   |*| }
   \*/
   function addCommand(command) {
-    var cmd = mori.js_to_clj(command);
+    if('command' in command) {
+      command.command = toKeyword(command.command);
+    }
+    if('hidden' in command) {
+      command.hidden = false;
+    }
+    var cmd = toHashMap(command);
+    console.log("CMD", cmd);
     lt.objs.command.command.call(null, cmd);
   }
 
@@ -189,6 +207,7 @@ module.exports = function(window, localRoot) {
 
     // cljs
     toKeyword: toKeyword,
+    toHashMap: toHashMap,
 
     // lt
     require: requireLocal,
