@@ -1,6 +1,6 @@
 {
   "name": "ltrap",
-  "version": "0.0.2",
+  "version": "0.1.0",
   "description": "Lightweight JS API wrapper for Light Table.",
   "main": "index.js",
   "scripts": {
@@ -21,6 +21,7 @@
   "license": "MIT",
   "readmeFilename": "README.md",
   "dependencies": {
-    "underscore": "~1.5.2"
+    "underscore": "~1.5.2",
+    "mori": "~0.2.4"
   }
 }

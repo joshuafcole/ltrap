@@ -59,7 +59,7 @@ module.exports = function(window, localRoot) {
   }
 
   /*\
-  |*| Registers functions as CodeMirror actions.
+  |*| Registers a function as a CodeMirror action.
   \*/
   function addAction(commandName, command) {
     var CodeMirror = window.CodeMirror;
@@ -72,11 +72,25 @@ module.exports = function(window, localRoot) {
   /*\
   |*| Invokes a native LT command (anything that is registered with the commandbar).
   \*/
-  function command(name) {
+  function execCommand(name) {
     var args = [].slice.call(arguments, 1);
     var kw = toKeyword(name);
     args.unshift(kw);
     return lt.objs.command.exec_BANG_.apply(lt.objs.command.command, args);
+  }
+
+  /*\
+  |*| Registers a new command with LT.
+  |*| command {
+  |*|   command: String   Name
+  |*|   desc:    String   Description
+  |*|   hidden:  Boolean  Visible in commandbar
+  |*|   exec:    function Function to execute.
+  |*| }
+  \*/
+  function addCommand(name, command) {
+    var cmd = mori.js_to_clj(command);
+    lt.objs.command.command.call(null, cmd);
   }
 
   /*\
@@ -179,8 +193,11 @@ module.exports = function(window, localRoot) {
     // lt
     require: requireLocal,
     requireLocal: requireLocal, // @deprecated
+
     addAction: addAction,
-    command: command,
+    addCommand: addCommand,
+    execCommand: execCommand,
+
     enterContext: enterContext,
     exitContext: exitContext,
 
