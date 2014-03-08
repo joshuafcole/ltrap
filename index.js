@@ -2,7 +2,6 @@ var _ = require('underscore');
 var path = require('path');
 
 module.exports = function(params) {
-  console.log('PARAMS ARE', params);
   var window = params.window;
   var cljs = window.cljs;
   var document = window.document;
