@@ -1,7 +1,9 @@
 var _ = require('underscore');
 var path = require('path');
 
-module.exports = function(window, localRoot) {
+module.exports = function(params) {
+  console.log('PARAMS ARE', params);
+  var window = params.window;
   var cljs = window.cljs;
   var document = window.document;
   var lt = window.lt;
@@ -62,7 +64,7 @@ module.exports = function(window, localRoot) {
   |*| Requires plugin-local files and modules.
   \*/
   function requireLocal(name, root) {
-    root = root || localRoot;
+    root = root || params.root;
 
     return ignore(_.partial(require, path.join(root, name)), 'MODULE_NOT_FOUND') || // File include.
       ignore(_.partial(require, path.join(root, 'node_modules', name)), 'MODULE_NOT_FOUND') || // Module include
@@ -206,8 +208,8 @@ module.exports = function(window, localRoot) {
     return !height;
   }
 
-  return {
-    window: window,
+  module.exports = {
+    params: params,
 
     ignore: ignore,
 
@@ -236,4 +238,6 @@ module.exports = function(window, localRoot) {
     confirm: confirm,
     showContainer: showContainer
   };
+
+  return module.exports;
 };
