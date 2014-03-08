@@ -207,6 +207,8 @@ module.exports = function(window, localRoot) {
   }
 
   return {
+    window: window,
+
     ignore: ignore,
 
     // cljs
