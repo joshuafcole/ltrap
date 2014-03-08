@@ -1,6 +1,6 @@
 {
   "name": "ltrap",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "Lightweight JS API wrapper for Light Table.",
   "main": "index.js",
   "scripts": {

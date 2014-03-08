@@ -4,6 +4,7 @@ ltrap
 Lightweight JS API wrapper for Light Table.
 
 ## Changelog
+* 0.2.2 Adds bootstrap.js for bootstrapping node JS based plugins.
 * 0.2.1 Bootstrap takes a single params hash, passed through as params to clients.
 * 0.2.0 Mutates LTrap from bootstrap function into standard module after first invocation.
 * 0.1.3 Fixes LTrap getActiveFile/Directory when a non file-backed tab is selected.
