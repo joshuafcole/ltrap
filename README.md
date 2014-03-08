@@ -4,6 +4,7 @@ ltrap
 Lightweight JS API wrapper for Light Table.
 
 ## Changelog
+* 0.2.0 Mutates LTrap from bootstrap function into standard module after first invocation.
 * 0.1.3 Fixes LTrap getActiveFile/Directory when a non file-backed tab is selected.
 * 0.1.2 Updates getActive* to use LT API instead of DOM hackery.
 * 0.1.1 Removes debug log.
